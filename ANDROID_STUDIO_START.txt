@@ -1,0 +1,8 @@
+ANDROID STUDIO:
+
+1. File > Open
+2. Ordner Deutsch_Aktiv_Worttrainer_Android_Mobile auswählen
+3. Gradle Sync bestätigen
+4. Build > Generate App Bundles or APKs > Generate APKs
+
+Kein Python erforderlich.
