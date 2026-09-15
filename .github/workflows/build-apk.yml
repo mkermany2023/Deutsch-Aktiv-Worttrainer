@@ -6,30 +6,39 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   build-apk:
     runs-on: ubuntu-latest
 
     steps:
       - name: Projekt laden
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Java 17 einrichten
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '17'
 
       - name: Android SDK einrichten
         uses: android-actions/setup-android@v4
+        with:
+          packages: ''
 
-      - name: Android API 37 installieren
-        run: sdkmanager "platforms;android-37" "build-tools;37.0.0" "platform-tools"
+      - name: Android API installieren
+        run: |
+          sdkmanager "platform-tools" \
+                     "platforms;android-37" \
+                     "build-tools;37.0.0"
 
       - name: Gradle 9.6 einrichten
         uses: gradle/actions/setup-gradle@v6
         with:
           gradle-version: '9.6.0'
+          cache-provider: basic
 
       - name: APK bauen
         run: gradle --no-daemon :app:assembleDebug
@@ -39,3 +48,5 @@ jobs:
         with:
           name: Deutsch-Aktiv-APK
           path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
